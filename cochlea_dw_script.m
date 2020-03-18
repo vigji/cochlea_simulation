@@ -1,25 +1,24 @@
-% for omega = 300:50:1500
-%     [disp] = cochlea_dw(omega);
-%     plot(abs(disp)); hold on
-% end
-
-font_size = 40
-linewidth = 5
+% Script to generate gif of cochlea oscillation for increasing frequencies
+% under the deep water approximation
+font_size = 40;
+linewidth = 5;
     
 filename = 'test.gif';
 a = colormap('lines');
-[disp, phasor, x] = cochlea_dw(600);
-for n = 1:2:400
-    [disp, phasor] = cochlea_dw(600+n);
+
+for n = 600:2:1000
+    [disp, phasor, x] = cochlea_dw(n);
+    % Plot membrane position:
     plot(x, real(disp*phasor(n)), 'LineWidth', linewidth);
     hold on
+    % Plot boundaries of the membrane oscillation:
     plot(x, abs(disp*phasor(n)), '--', 'Color', a(7,:), 'LineWidth', linewidth);
     plot(x, -abs(disp*phasor(n)), '--', 'Color', a(7,:), 'LineWidth', linewidth);
     
     ylim([-0.007, 0.007])
     xlim([0, 2.5])
     
-    b = ylabel('Displacement (mm)', 'Position', [-0.30 6.6757e-09 -1.0000])%, 'FontWeight'), 'bold')
+    b = ylabel('Displacement (mm)', 'Position', [-0.30 6.6757e-09 -1.0000]);%, 'FontWeight'), 'bold')
     xlabel('Distance from round window (mm)', 'Position', [1.2500 -0.009 -1.0000])%, 'FontWeight', 'bold')
     get(b, 'Position')
     set(gca,'fontsize',font_size)
@@ -32,7 +31,7 @@ for n = 1:2:400
     
     pause(0.02)
     step_text = 10;
-    text(2, 0.006, strcat(num2str(step_text*round((n+600)/step_text)), ' Hz'), ...
+    text(2, 0.006, strcat(num2str(step_text*round((n)/step_text)), ' Hz'), ...
         'FontSize', font_size)%, 'FontWeight', 'bold')
     drawnow
     
